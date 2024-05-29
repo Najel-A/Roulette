@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import Roulette from './Roulette';
 
@@ -8,7 +7,8 @@ import Roulette from './Roulette';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Roulette />
+    <App />
+    {/* <Roulette /> */}
   </React.StrictMode>
 );
 

@@ -1,0 +1,29 @@
+/* RouletteWheel.css */
+.roulette-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  
+  .spin-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .spin-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Add more CSS styles to customize the appearance of the wheel */
+  
