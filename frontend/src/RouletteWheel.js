@@ -51,7 +51,7 @@ const RouletteWheel = () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  const [array, setArray] = useState(['1']); // Last 20 numbers spinned
+  const [array, setArray] = useState([]); // Last 20 numbers spinned
   const [blackCounter, setBlackCounter] = useState(0);
   const [redCounter, setRedCounter] = useState(0);
   const [greenCounter, setGreenCounter] = useState(0);
@@ -69,6 +69,7 @@ const RouletteWheel = () => {
     if (!isSpinning) {
       const selectedOption = data.find((item, index) => index === prizeNumber);
       console.log("selectred option",selectedOption);
+      totalSpins++;
       if (selectedOption) {
         setArray(prevArray => [...prevArray, selectedOption.option]);
       }
@@ -89,14 +90,14 @@ const RouletteWheel = () => {
     }
   }, [isSpinning, prizeNumber]);
   if (array.length == 2 && array[0] === '0' && array[1] === '0'){
-    array.splice(0, 2);
+    array.splice(0,2);
   }
   console.log(array)
 
-  const totalSpins = blackCounter + redCounter + greenCounter;
-  const blackProbability = totalSpins > 0 ? (blackCounter / array.length) * 100 : 0;
-  const redProbability = totalSpins > 0 ? (redCounter / array.length) * 100 : 0;
-  const greenProbability = totalSpins > 0 ? (redCounter / array.length) * 100 : 0;
+  var totalSpins = blackCounter + redCounter + greenCounter;
+  const blackProbability = totalSpins >= 0 ? (blackCounter / array.length) * 100 : 0;
+  const redProbability = totalSpins >= 0 ? (redCounter / array.length) * 100 : 0;
+  const greenProbability = totalSpins >= 0 ? (greenCounter / array.length) * 100 : 0;
   // const greenProbability = totalSpins > 0 ? (greenCounter / array.length) * 100 : 0;
 
   console.log(blackProbability);
