@@ -47,34 +47,59 @@ const data = [
   { option: '2', style: { backgroundColor: 'black', textColor: 'white' } }
 ];
 
-
-
-
 const RouletteWheel = () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  const [array, setArray] = useState([]);
+  const [array, setArray] = useState(['1']); // Last 20 numbers spinned
+  const [blackCounter, setBlackCounter] = useState(0);
+  const [redCounter, setRedCounter] = useState(0);
+  const [greenCounter, setGreenCounter] = useState(0);
 
-  // Figure out stats here
+
+  // Figure out stats here, will be off since starting with a fake data set
   const blackOptions = data.filter(item => item.style.backgroundColor === 'black').map(item => item.option);
   const redOptions = data.filter(item => item.style.backgroundColor === 'red').map(item => item.option);
   const greenOptions = data.filter(item => item.style.backgroundColor === 'green').map(item => item.option);
 
-  console.log("Black options:", blackOptions);
-  console.log("Red options:", redOptions);
-  console.log("Green options:", greenOptions);
 
 
+  // Will have to have this configured in the backend later on
   useEffect(() => {
     if (!isSpinning) {
       const selectedOption = data.find((item, index) => index === prizeNumber);
+      console.log("selectred option",selectedOption);
       if (selectedOption) {
         setArray(prevArray => [...prevArray, selectedOption.option]);
-        console.log("Selected Option:", selectedOption);
       }
+
+      // Color Probability
+      if (blackOptions.includes(selectedOption.option)){
+        setBlackCounter(prevCount => prevCount + 1);
+      }
+      if (redOptions.includes(selectedOption.option)){
+        setRedCounter(prevCount => prevCount + 1);
+      }
+      if (greenOptions.includes(selectedOption.option)){
+        setGreenCounter(prevCount => prevCount + 1);
+      }
+      console.log("Black Prob:", blackCounter);
+      //console.log("Red Prob:")
+
     }
   }, [isSpinning, prizeNumber]);
+  if (array.length == 2 && array[0] === '0' && array[1] === '0'){
+    array.splice(0, 2);
+  }
+  console.log(array)
+
+  const totalSpins = blackCounter + redCounter + greenCounter;
+  const blackProbability = totalSpins > 0 ? (blackCounter / array.length) * 100 : 0;
+  const redProbability = totalSpins > 0 ? (redCounter / array.length) * 100 : 0;
+  const greenProbability = totalSpins > 0 ? (redCounter / array.length) * 100 : 0;
+  // const greenProbability = totalSpins > 0 ? (greenCounter / array.length) * 100 : 0;
+
+  console.log(blackProbability);
 
   const handleSpinClick = () => {
     if (!mustSpin) {
@@ -109,10 +134,15 @@ const RouletteWheel = () => {
         radiusLineColor='#FFFFFF'
       />
       <button onClick={handleSpinClick} style={{ display: 'block', margin: '0 auto' }}>SPIN</button>
+      <h1>Black Probability: {blackProbability.toFixed(2)}%</h1>
+      <h1>Red Probability: {redProbability.toFixed(2)}%</h1>
+      <h1>Green Probability: {greenProbability.toFixed(2)}%</h1>
       <h1>Numbers</h1>
       <ul>
-        {/* Map over the array and render each element */}
-        {array.map((element, index) => (
+        {/* Map over the array and render each element
+            Temporary fix for the useEffect creating two indexes
+         */}
+        {array.reverse().map((element, index) => (
           <li key={index}>{element}</li>
         ))}
       </ul>
