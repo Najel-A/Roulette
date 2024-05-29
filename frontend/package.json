@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://najel-a.github.io/frontend/",
+  "homepage": "https://najel-a.github.io/Roulette/frontend/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
