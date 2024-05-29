@@ -1,29 +1,52 @@
-/* RouletteWheel.css */
-.roulette-container {
+/* Roulette.css */
+
+.wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .wheel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #f0f0f0; /* Background color of the wheel */
+    border: 2px solid #000; /* Border color */
+  }
+  
+  .option {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 150px 150px 0;
+    border-color: #000 transparent transparent;
+    transition: transform 4s ease-out; /* Adjust the duration as needed */
+  }
+  
+  .option-text {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff; /* Text color */
+    text-shadow: 1px 1px 2px #000; /* Text shadow */
+  }
+  
+  /*Delete later on when board is made */
+  .center-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    margin-top: 50px;
+    align-items: center;
+    height: 100vh; /* Adjust height as needed */
   }
   
-  .spin-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
+  .center-content {
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 8px;
   }
-  
-  .spin-button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Add more CSS styles to customize the appearance of the wheel */
   

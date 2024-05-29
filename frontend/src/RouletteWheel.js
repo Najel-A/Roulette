@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import './Roulette.css'
 
@@ -49,18 +49,32 @@ const data = [
 
 const RouletteWheel = () => {
   const [mustSpin, setMustSpin] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+  const [array, setArray] = useState([]);
+
+  useEffect(() => {
+    if (!isSpinning) {
+      const selectedOption = data.find((item, index) => index === prizeNumber);
+      if (selectedOption) {
+        setArray(prevArray => [...prevArray, selectedOption.option]);
+        console.log("Selected Option:", selectedOption);
+      }
+    }
+  }, [isSpinning, prizeNumber]);
 
   const handleSpinClick = () => {
     if (!mustSpin) {
       const newPrizeNumber = Math.floor(Math.random() * data.length);
       setPrizeNumber(newPrizeNumber);
       setMustSpin(true);
+      setIsSpinning(true);
     }
   };
 
   const onStopSpinning = () => {
     setMustSpin(false);
+    setIsSpinning(false);
   };
 
   return (
@@ -70,10 +84,29 @@ const RouletteWheel = () => {
         prizeNumber={prizeNumber}
         data={data}
         onStopSpinning={onStopSpinning}
+        innerRadius={25}
+        disableInitialAnimation={true}
+        outerBorderColor='black'
+        outerBorderWidth={15}
+        innerBorderColor='black'
+        innerBorderWidth={15}
+        perpendicularText={true}
+        fontSize={15}
+        radiusLineWidth={3}
+        radiusLineColor='#FFFFFF'
       />
-      <button onClick={handleSpinClick}>SPIN</button>
+      <button onClick={handleSpinClick} style={{ display: 'block', margin: '0 auto' }}>SPIN</button>
+      <h1>Numbers</h1>
+      <ul>
+        {/* Map over the array and render each element */}
+        {array.map((element, index) => (
+          <li key={index}>{element}</li>
+        ))}
+      </ul>
+
     </>
   );
 };
+
 
 export default RouletteWheel;
