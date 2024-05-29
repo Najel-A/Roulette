@@ -1,0 +1,305 @@
+:root {
+    --platesize: 350px; 
+    --pitwidth: 32px; 
+    --to: 37; 
+    --rimsize: 6px; 
+    --trim: gold; 
+    --trimSecondary: silver; 
+    --spinButton: green; 
+    --resetButton: darkgreen; 
+    --spins: 8; 
+  }
+  
+  body {
+    font-family: "Roboto", sans-serif;
+    
+  }
+  
+  .main {
+    width: calc(var(--platesize) + 24px);
+    margin: 0 auto;
+  }
+  
+  .plate {
+    background-color: gray;
+    width: var(--platesize);
+    height: var(--platesize);
+    margin: calc(var(--rimsize) * 2);
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 24s infinite linear;
+  }
+  
+  .plate::after,
+  .plate::before {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+  }
+  
+  .plate::after {
+    top: calc(-1 * var(--rimsize));
+    right: calc(-1 * var(--rimsize));
+    bottom: calc(-1 * var(--rimsize));
+    left: calc(-1 * var(--rimsize));
+    border: var(--rimsize) solid var(--trim);
+    box-shadow: inset 0px 0px 0px calc(var(--rimsize) / 3) darken(var(--trim), 15%), 0px 0px 0px calc(var(--rimsize) / 3) lighten(var(--trim), 25%);
+  }
+  
+  .plate::before {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid var(--trimSecondary);
+    box-shadow: inset 0px 0px 0px 2px darken(var(--trimSecondary), 25%);
+    top: 12%;
+    left: 12%;
+    right: 12%;
+    bottom: 12%;
+    z-index: 1;
+  }
+  
+  .number {
+    width: var(--pitwidth);
+    height: calc(var(--platesize) / 2);
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: calc(50% - (var(--pitwidth) / 2));
+    transform-origin: 50% 100%;
+    background-color: transparent;
+    border-left: calc(var(--pitwidth) / 2) solid transparent;
+    border-right: calc(var(--pitwidth) / 2) solid transparent;
+    border-top: calc(var(--platesize) / 2) solid black;
+    box-sizing: border-box;
+  }
+  
+  .number:nth-child(odd) {
+    border-top-color: red;
+  }
+  
+  .number:nth-child(var(--to)) {
+    border-top-color: green;
+  }
+  
+  .pit {
+    color: #fff;
+    padding-top: 12px;
+    width: var(--pitwidth);
+    display: inline-block;
+    font-size: 12px;
+    transform: scale(1, 1.8);
+    position: absolute;
+    top: calc(-1 * (var(--platesize) / 2));
+    left: calc(-1 * (var(--pitwidth) / 2));
+  }
+  
+  .inner {
+    display: block;
+    height: var(--platesize);
+    width: var(--platesize);
+    position: relative;
+  }
+  
+  .inner::after,
+  .inner::before {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+  }
+  
+  .inner::after {
+    z-index: 3;
+    top: 24%;
+    right: 24%;
+    bottom: 24%;
+    left: 24%;
+    background-color: darken(var(--trimSecondary), 45%);
+    border: 3px solid darken(var(--trimSecondary), 25%);
+  }
+  
+  .inner::before {
+    top: 24%;
+    bottom: 21%;
+    left: 24%;
+    right: 22%;
+    color: #fff;
+    font-size: 60px;
+    z-index: 5;
+    border-radius: 0;
+  }
+  
+  .inner[data-spinto="1"]::before { transform: rotateZ(calc(360 * -1 * var(--spins) + 278deg)); transition: transform 9s ease-out; content: "\2022"; }
+  .inner[data-spinto="2"]::before { transform: rotateZ(calc(360 * -1 * var(--spins) + 106deg)); transition: transform 9s ease-out; content: "\2022"; }
+  /* Add other cases similarly */
+  
+  .btn {
+    background: var(--spinButton);
+    border: 1px solid darken(var(--spinButton), 30%);
+    border-top-color: lighten(var(--spinButton), 10%);
+    border-left-color: lighten(var(--spinButton), 10%);
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    font-size: 15px;
+    width: calc(var(--platesize) / 2);
+    padding: 12px;
+    margin: 12px;
+    cursor: pointer;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    border-radius: 3px;
+  }
+  
+  .btn .btn-label {
+    padding: 12px;
+    white-space: nowrap;
+  }
+  
+  .btn.btn-reset {
+    background: var(--resetButton);
+    border: 1px solid darken(var(--resetButton), 30%);
+    border-top-color: lighten(var(--resetButton), 10%);
+    border-left-color: lighten(var(--resetButton), 10%);
+  }
+  
+  .btn.disabled {
+    opacity: 0.2;
+    transition: opacity 0.24s linear;
+    cursor: not-allowed;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+  
+  .data {
+    display: block;
+    position: absolute;
+    top: 30%;
+    right: 30%;
+    bottom: 30%;
+    left: 30%;
+    border-radius: 50%;
+    animation: rotate 24s reverse linear infinite;
+    perspective: 2000px;
+    z-index: 100;
+  }
+  
+  .data .data-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.72s;
+    transform-style: preserve-3d;
+  }
+  
+  .data.reveal .data-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .mask,
+  .result {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    backface-visibility: hidden;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .mask {
+    color: #fff;
+    font-size: 24px;
+    margin: auto;
+    line-height: 1.4;
+    padding-top: 36px;
+  }
+  
+  .result {
+    background-color: green;
+    color: white;
+    transform: rotateY(180deg);
+    align-items: center;
+    color: #fff;
+  }
+  
+  .result-number {
+    font-size: 72px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 12px;
+  }
+  
+  .result-color {
+    text-transform: uppercase;
+    font-size: 21px;
+    line-height: 1;
+  }
+  
+  .previous-results {
+    max-width: var(--platesize);
+    margin: 24px 12px;
+  }
+  
+  .previous-list {
+    perspective: 2000;
+  }
+  
+  .previous-result {
+    display: flex;
+    margin: 1px;
+    padding: 12px;
+    color: #fff;
+  }
+  
+  .previous-result:first-child {
+    animation: flipin 0.48s ease-out;
+  }
+  
+  .previous-result .previous-number {
+    flex: 1;
+  }
+  
+  .color-green {
+    background-color: green;
+  }
+  
+  .color-black {
+    background-color: black;
+  }
+  
+  .color-red {
+    background-color: red;
+  }
+  
+  .visuallyhidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+  }
+  
+  @keyframes flipin {
+    0% {
+      transform: rotateX(90deg);
+    }
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+  
