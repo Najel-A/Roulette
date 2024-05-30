@@ -55,14 +55,24 @@ const RouletteWheel = () => {
   const [blackCounter, setBlackCounter] = useState(0);
   const [redCounter, setRedCounter] = useState(0);
   const [greenCounter, setGreenCounter] = useState(0);
-
+  const [seconds, setSeconds] = useState(15);
 
   // Figure out stats here, will be off since starting with a fake data set
   const blackOptions = data.filter(item => item.style.backgroundColor === 'black').map(item => item.option);
   const redOptions = data.filter(item => item.style.backgroundColor === 'red').map(item => item.option);
   const greenOptions = data.filter(item => item.style.backgroundColor === 'green').map(item => item.option);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(prevSeconds => prevSeconds - 1);
+      } else {
+        
+      }
+    }, 1000);
 
+    return () => clearInterval(interval);
+  }, [seconds]);
 
   // Will have to have this configured in the backend later on
   useEffect(() => {
@@ -114,10 +124,12 @@ const RouletteWheel = () => {
   const onStopSpinning = () => {
     setMustSpin(false);
     setIsSpinning(false);
+    //setSeconds(Math.floor(Math.random() * 30));
   };
 
   return (
     <>
+      <h1>Timer: {seconds} seconds</h1>
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
