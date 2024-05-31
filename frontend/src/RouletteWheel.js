@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import './Roulette.css'
+import axios from 'axios';
 
 // https://github.com/effectussoftware/react-custom-roulette
 // Using this npm package
@@ -51,10 +52,14 @@ const RouletteWheel = () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  const [array, setArray] = useState([]); // Last 20 numbers spinned
-  const [blackCounter, setBlackCounter] = useState(0);
-  const [redCounter, setRedCounter] = useState(0);
-  const [greenCounter, setGreenCounter] = useState(0);
+
+  // Default first 5 numbers
+  // Last 20 numbers spinned
+  const [array, setArray] = useState(['0', '1', '2', '3', '4']); 
+  
+  const [blackCounter, setBlackCounter] = useState(2);
+  const [redCounter, setRedCounter] = useState(2);
+  const [greenCounter, setGreenCounter] = useState(1);
   const [seconds, setSeconds] = useState(15);
 
   // Figure out stats here, will be off since starting with a fake data set
@@ -62,17 +67,17 @@ const RouletteWheel = () => {
   const redOptions = data.filter(item => item.style.backgroundColor === 'red').map(item => item.option);
   const greenOptions = data.filter(item => item.style.backgroundColor === 'green').map(item => item.option);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(prevSeconds => prevSeconds - 1);
-      } else {
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (seconds > 0) {
+  //       setSeconds(prevSeconds => prevSeconds - 1);
+  //     } else {
         
-      }
-    }, 1000);
+  //     }
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, [seconds]);
+  //   return () => clearInterval(interval);
+  // }, [seconds]);
 
   // Will have to have this configured in the backend later on
   useEffect(() => {
@@ -81,6 +86,7 @@ const RouletteWheel = () => {
       console.log("selectred option",selectedOption);
       totalSpins++;
       if (selectedOption) {
+        console.log("In Here");
         setArray(prevArray => [...prevArray, selectedOption.option]);
       }
 
@@ -99,25 +105,41 @@ const RouletteWheel = () => {
 
     }
   }, [isSpinning, prizeNumber]);
-  if (array.length == 2 && array[0] === '0' && array[1] === '0'){
-    array.splice(0,2);
-  }
+  
   console.log(array)
 
   var totalSpins = blackCounter + redCounter + greenCounter;
-  const blackProbability = totalSpins >= 0 ? (blackCounter / array.length) * 100 : 0;
-  const redProbability = totalSpins >= 0 ? (redCounter / array.length) * 100 : 0;
-  const greenProbability = totalSpins >= 0 ? (greenCounter / array.length) * 100 : 0;
+  totalSpins -= 2;
+  var blackProbability = totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0;
+  var redProbability = totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0;
+  var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
   // const greenProbability = totalSpins > 0 ? (greenCounter / array.length) * 100 : 0;
 
-  console.log(blackProbability);
+  console.log('Total Spins', totalSpins);
+  console.log('Black Prob', blackProbability);
+  console.log('Red Prob', redProbability);
+  console.log('Green Prob', greenProbability);
+  
 
-  const handleSpinClick = () => {
+  // const handleSpinClick = () => {
+  //   if (!mustSpin) {
+  //     const newPrizeNumber = Math.floor(Math.random() * data.length);
+  //     setPrizeNumber(newPrizeNumber);
+  //     setMustSpin(true);
+  //     setIsSpinning(true);
+  //   }
+  // };
+
+  const handleSpinClick = async () => {
     if (!mustSpin) {
-      const newPrizeNumber = Math.floor(Math.random() * data.length);
-      setPrizeNumber(newPrizeNumber);
-      setMustSpin(true);
-      setIsSpinning(true);
+      try {
+        const response = await axios.get('http://localhost:4000/spin');
+        setPrizeNumber(response.data.prizeNumber);
+        setMustSpin(true);
+        setIsSpinning(true);
+      } catch (error) {
+        console.error('Error fetching spin result:', error);
+      }
     }
   };
 
