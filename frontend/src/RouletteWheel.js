@@ -134,6 +134,7 @@ const RouletteWheel = () => {
     if (!mustSpin) {
       try {
         const response = await axios.get('http://localhost:4000/spin');
+        console.log('Response', response);
         setPrizeNumber(response.data.prizeNumber);
         setMustSpin(true);
         setIsSpinning(true);

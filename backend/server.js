@@ -49,6 +49,7 @@ const data = [
 
 app.get('/spin', (req, res) => {
   const prizeNumber = Math.floor(Math.random() * data.length);
+  console.log(prizeNumber);
   res.json({ prizeNumber });
 });
 
