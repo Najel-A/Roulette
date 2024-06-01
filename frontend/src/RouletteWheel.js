@@ -83,25 +83,20 @@ const RouletteWheel = () => {
   useEffect(() => {
     if (!isSpinning) {
       const selectedOption = data.find((item, index) => index === prizeNumber);
-      console.log("selectred option",selectedOption);
-      totalSpins++;
-      if (selectedOption) {
-        console.log("In Here");
-        setArray(prevArray => [...prevArray, selectedOption.option]);
-      }
-
+      // console.log("selectred option",selectedOption);
+      // totalSpins++;
+    
+      setArray(prevArray => [...prevArray, prizeNumber]);
       // Color Probability
-      if (blackOptions.includes(selectedOption.option)){
+      if (blackOptions.includes(prizeNumber)){
         setBlackCounter(prevCount => prevCount + 1);
       }
-      if (redOptions.includes(selectedOption.option)){
+      if (redOptions.includes(prizeNumber)){
         setRedCounter(prevCount => prevCount + 1);
       }
-      if (greenOptions.includes(selectedOption.option)){
+      if (greenOptions.includes(prizeNumber)){
         setGreenCounter(prevCount => prevCount + 1);
       }
-      console.log("Black Prob:", blackCounter);
-      //console.log("Red Prob:")
 
     }
   }, [isSpinning, prizeNumber]);
@@ -115,10 +110,10 @@ const RouletteWheel = () => {
   var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
   // const greenProbability = totalSpins > 0 ? (greenCounter / array.length) * 100 : 0;
 
-  console.log('Total Spins', totalSpins);
-  console.log('Black Prob', blackProbability);
-  console.log('Red Prob', redProbability);
-  console.log('Green Prob', greenProbability);
+  // console.log('Total Spins', totalSpins);
+  // console.log('Black Prob', blackProbability);
+  // console.log('Red Prob', redProbability);
+  // console.log('Green Prob', greenProbability);
   
 
   // const handleSpinClick = () => {
