@@ -108,29 +108,17 @@ const RouletteWheel = () => {
   var blackProbability = totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0;
   var redProbability = totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0;
   var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
-  // const greenProbability = totalSpins > 0 ? (greenCounter / array.length) * 100 : 0;
-
-  // console.log('Total Spins', totalSpins);
-  // console.log('Black Prob', blackProbability);
-  // console.log('Red Prob', redProbability);
-  // console.log('Green Prob', greenProbability);
-  
-
-  // const handleSpinClick = () => {
-  //   if (!mustSpin) {
-  //     const newPrizeNumber = Math.floor(Math.random() * data.length);
-  //     setPrizeNumber(newPrizeNumber);
-  //     setMustSpin(true);
-  //     setIsSpinning(true);
-  //   }
-  // };
 
   const handleSpinClick = async () => {
     if (!mustSpin) {
       try {
         const response = await axios.get('http://localhost:4000/spin');
         console.log('Response', response);
-        setPrizeNumber(response.data.prizeNumber);
+        const selectedIndex = data.findIndex(item => String(response.data.prizeNumber) === item.option);
+        console.log("selected index", selectedIndex);
+
+
+        setPrizeNumber((selectedIndex));
         setMustSpin(true);
         setIsSpinning(true);
       } catch (error) {

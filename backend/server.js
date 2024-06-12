@@ -49,8 +49,8 @@ const data = [
 
 app.get('/spin', (req, res) => {
   const prizeNumber = Math.floor(Math.random() * data.length);
-  console.log('Data[PrizeNumber]:', data[prizeNumber]);
-  res.json({ data[prizeNumber].option });
+  console.log(prizeNumber);
+  res.json({ prizeNumber });
 });
 
 app.listen(port, () => {
