@@ -52,6 +52,7 @@ const RouletteWheel = () => {
   const [mustSpin, setMustSpin] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+  const [actualPrizeNumber, setActualPrizeNumber] = useState(0);
 
   // Default first 5 numbers
   // Last 20 numbers spinned
@@ -82,24 +83,24 @@ const RouletteWheel = () => {
   // Will have to have this configured in the backend later on
   useEffect(() => {
     if (!isSpinning) {
-      const selectedOption = data.find((item, index) => index === prizeNumber);
+      // const selectedOption = data.find((item, index) => index === prizeNumber);
       // console.log("selectred option",selectedOption);
       // totalSpins++;
     
-      setArray(prevArray => [...prevArray, prizeNumber]);
+      setArray(prevArray => [...prevArray, actualPrizeNumber]);
       // Color Probability
-      if (blackOptions.includes(prizeNumber)){
+      if (blackOptions.includes(actualPrizeNumber)){
         setBlackCounter(prevCount => prevCount + 1);
       }
-      if (redOptions.includes(prizeNumber)){
+      if (redOptions.includes(actualPrizeNumber)){
         setRedCounter(prevCount => prevCount + 1);
       }
-      if (greenOptions.includes(prizeNumber)){
+      if (greenOptions.includes(actualPrizeNumber)){
         setGreenCounter(prevCount => prevCount + 1);
       }
 
     }
-  }, [isSpinning, prizeNumber]);
+  }, [isSpinning, prizeNumber, actualPrizeNumber]);
   
   console.log(array)
 
@@ -117,7 +118,7 @@ const RouletteWheel = () => {
         const selectedIndex = data.findIndex(item => String(response.data.prizeNumber) === item.option);
         console.log("selected index", selectedIndex);
 
-
+        setActualPrizeNumber(response.data.prizeNumber);
         setPrizeNumber((selectedIndex));
         setMustSpin(true);
         setIsSpinning(true);
