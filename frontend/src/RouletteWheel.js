@@ -62,6 +62,9 @@ const RouletteWheel = () => {
   const [redCounter, setRedCounter] = useState(2);
   const [greenCounter, setGreenCounter] = useState(1);
   const [seconds, setSeconds] = useState(15);
+  const [greenProbability, setGreenProbability] = useState(0);
+  const [redProbability, setRedProbability] = useState(0);
+  const [blackProbability, setBlackProbability] = useState(0);
 
   // Figure out stats here, will be off since starting with a fake data set
   const blackOptions = data.filter(item => item.style.backgroundColor === 'black').map(item => item.option);
@@ -89,34 +92,64 @@ const RouletteWheel = () => {
     
       setArray(prevArray => [...prevArray, actualPrizeNumber]);
       // Color Probability
-      if (blackOptions.includes(actualPrizeNumber)){
+      if (blackOptions.includes(String(actualPrizeNumber))){
+        //console.log("Updated BC");
         setBlackCounter(prevCount => prevCount + 1);
       }
-      if (redOptions.includes(actualPrizeNumber)){
+      if (redOptions.includes(String(actualPrizeNumber))){
+        //console.log("Updated RC");
         setRedCounter(prevCount => prevCount + 1);
       }
-      if (greenOptions.includes(actualPrizeNumber)){
+      if (greenOptions.includes(String(actualPrizeNumber))){
+        //console.log("Updated GC");
         setGreenCounter(prevCount => prevCount + 1);
       }
 
+      // console.log("Black Counter:", blackCounter);
+      // console.log("Red Counter:", redCounter);
+      // console.log("Green Counter:", greenCounter);
+
+      // var totalSpins = blackCounter + redCounter + greenCounter;
+      // //totalSpins -= 2; // Adjusting for initial fake data set
+      // var blackProbability = totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0;
+      // var redProbability = totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0;
+      // var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
+
+      // Update probabilities in state
+      // setBlackProbability(blackProbability);
+      // setRedProbability(redProbability);
+      // setGreenProbability(greenProbability);
+      
+      
+
     }
   }, [isSpinning, prizeNumber, actualPrizeNumber]);
-  
-  console.log(array)
 
-  var totalSpins = blackCounter + redCounter + greenCounter;
-  totalSpins -= 2;
-  var blackProbability = totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0;
-  var redProbability = totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0;
-  var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
+  useEffect(() => {
+    const totalSpins = blackCounter + redCounter + greenCounter - 2;
+    setBlackProbability(totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0);
+    setRedProbability(totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0);
+    setGreenProbability(totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0);
+  }, [blackCounter, redCounter, greenCounter]);
+  
+  // console.log("black prob:", blackProbability);
+  // console.log("red prob:", redProbability);
+  // console.log("green prob:", greenProbability);
+  // console.log(array)
+
+  // var totalSpins = blackCounter + redCounter + greenCounter;
+  // totalSpins -= 2;
+  // var blackProbability = totalSpins >= 0 ? (blackCounter / totalSpins) * 100 : 0;
+  // var redProbability = totalSpins >= 0 ? (redCounter / totalSpins) * 100 : 0;
+  // var greenProbability = totalSpins >= 0 ? (greenCounter / totalSpins) * 100 : 0;
 
   const handleSpinClick = async () => {
     if (!mustSpin) {
       try {
         const response = await axios.get('http://localhost:4000/spin');
-        console.log('Response', response);
+        //console.log('Response', response);
         const selectedIndex = data.findIndex(item => String(response.data.prizeNumber) === item.option);
-        console.log("selected index", selectedIndex);
+        //console.log("selected index", selectedIndex);
 
         setActualPrizeNumber(response.data.prizeNumber);
         setPrizeNumber((selectedIndex));
