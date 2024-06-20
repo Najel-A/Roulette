@@ -1,0 +1,45 @@
+.roulette-table {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .number-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 50px);
+    grid-gap: 5px;
+    justify-content: center;
+  }
+  
+  .number {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .number.red {
+    background-color: red;
+  }
+  
+  .number.black {
+    background-color: black;
+  }
+  
+  .number.green {
+    background-color: green;
+  }
+  
+  .number.selected {
+    border: 3px solid yellow;
+  }
+  
+  .selected-number {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
